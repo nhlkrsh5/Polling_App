@@ -4,6 +4,9 @@ const app = express();
 import DBconnection from "./config/DBconfig.js";
 const port = 3000;
 
+app.use(express.json());
+app.use(express.text());
+app.use(express.urlencoded({ extended: true }));
 
 app.use("/api",apiRouter);
 app.get("/ping",(req,res)=>{
