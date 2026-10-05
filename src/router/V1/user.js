@@ -1,6 +1,7 @@
 import express from "express";
-import { UserRegister } from "../../controller/userController.js";
+import { UserLogin, UserRegister } from "../../controller/userController.js";
 import multer from "multer";
+import { isAuthenticated } from "../../middleware/auth.js";
 const router = express.Router();
 
 router.use(express.json());
@@ -17,5 +18,20 @@ router.get("/",(req,res)=>{
 });
 
 router.post("/signin",multer().none(),UserRegister);
+router.post("/signup",multer().none(),UserLogin);
+
+router.post("/alive",multer().none(),isAuthenticated,(req,res)=>{
+    res.json({
+        messege: "alive"
+    })
+});
+
+router.get("/currUser",isAuthenticated,(req,res)=>{
+    res.json({
+        success: true,
+        message: "User found",
+        currUser: req.user
+    })
+});
 
 export default router;

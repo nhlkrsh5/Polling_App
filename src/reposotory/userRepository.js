@@ -14,3 +14,12 @@ export const UserRegistered = async (username,email,password) => {
         }
     }
 }
+
+export const FindUserByItsEmail = async (u_email) => {
+    try {
+        const data = await User.findOne({email: u_email });
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}

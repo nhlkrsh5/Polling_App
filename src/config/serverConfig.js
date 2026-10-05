@@ -8,3 +8,4 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
 export const CONN = process.env.DB_URL;
+export const jwt_secrate = process.env.MY_JWT_SECRATE;
