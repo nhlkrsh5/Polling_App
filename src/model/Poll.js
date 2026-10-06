@@ -32,7 +32,7 @@ const pollSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['active','close'],
-        default: 'actives'
+        default: 'active'
     }
 },{timestamps:true});
 

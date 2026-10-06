@@ -26,7 +26,7 @@ export const isAuthenticated = async (req,res,next) => {
             });
         }
         
-       // console.log("response form jwt",response); 
+       //console.log("response form jwt",response); 
        req.user = response;
         next();
         

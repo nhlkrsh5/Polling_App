@@ -42,7 +42,8 @@ export const VerifyUser = async (data) => {
             if(comparePassword){
                 const tocken = await generateTocken({
                     username: user.username,
-                    email: user.email
+                    email: user.email,
+                    id: user._id
                 });
                 return tocken;
             }else{
