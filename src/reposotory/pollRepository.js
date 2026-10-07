@@ -14,3 +14,30 @@ export const CreateAPoll = async (poll) => {
         throw error;
     }
 }
+
+export const GetUserPoll = async (creator_id) => {
+    try {
+        const polls = await Poll.find({creator: creator_id});
+        return polls;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const GetPollByItsCode = async (p_code) => {
+    try {
+        const poll = await Poll.findOne({code: p_code}).select({creator: 0});
+        return poll;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const ClosePollById = async (id) => {
+    try {
+        const poll = await Poll.findByIdAndUpdate({_id: id},{$set: {status: "close"}});
+        return poll;
+    } catch (error) {
+        throw error;
+    }
+}
