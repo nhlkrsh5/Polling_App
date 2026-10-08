@@ -1,4 +1,4 @@
-import { ClosePollById, CreateAPoll, GetPollByItsCode, GetUserPoll } from "../reposotory/pollRepository.js";
+import { ClosePollById, CreateAPoll, DeleteAPollByID, FindAPollByID, GetPollByItsCode, GetUserPoll } from "../reposotory/pollRepository.js";
 import { RoomCodeGenerator } from "../utils/RoomCodeGenerator.js";
 
 export const CreatePollHandeler = async (poll,user) => {
@@ -63,26 +63,60 @@ export const getPollByIDHandler = async (poll_code) => {
     }
 }
 
-export const closePollHandler = async (id) => {
+export const closePollHandler = async (id,user) => {
     try {
-        const data = await ClosePollById(id);
+        const poll = await FindAPollByID(id);
 
-        if (data.status == "close") {
+        if(poll.creator == user){
+            const data = await ClosePollById(id);
+
+            if (data.status == "close") {
+                throw {
+                    status: 404,
+                    messege: "poll already close",
+                }
+            }
+            else if(!data){ 
+                throw {
+                    status: 404,
+                    messege: "poll not found",
+                }
+            }
+            else{
+                return data;
+            }
+        }else{
             throw {
-                status: 404,
-                messege: "poll already close",
+                status: 401,
+                messege: "unauthorized"
+            }
+        } 
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const DeletePollHandler = async (id,user) => {
+    try {
+        const poll = await FindAPollByID(id);
+
+        if(poll.creator == user){
+            const data = await DeleteAPollByID(id);
+
+            if(data){
+                return data;
+            }else{
+                throw {
+                status: 400,
+                messege: "poll not found"
+            }
+            }
+        }else{
+            throw {
+                status: 401,
+                messege: "unauthorized"
             }
         }
-        else if(!data){
-            throw {
-                status: 404,
-                messege: "poll not found",
-            }
-        }
-        else{
-            return data;
-        }
-        
     } catch (error) {
         throw error;
     }

@@ -1,4 +1,5 @@
-import { closePollHandler, CreatePollHandeler, getMyPollHandler, getPollByIDHandler } from "../services/pollService.js";
+import e from "express";
+import { closePollHandler, CreatePollHandeler, DeletePollHandler, getMyPollHandler, getPollByIDHandler } from "../services/pollService.js";
 export const CreatePoll = async (req,res) => {
     try {
         const user = req.user.id
@@ -13,7 +14,7 @@ export const CreatePoll = async (req,res) => {
         }
         res.json({
             sucess: true,
-            messege: "code working",
+            messege: "poll created",
             data: data
         });
     } catch (error) {
@@ -96,17 +97,45 @@ export const getPollByCode = async (req,res) => {
     }
 }
 
-
 export const CloseAPoll = async (req,res) => {
     try {
         const id = req.params.id;
-        
-        const poll = await closePollHandler(id);
+        const user = req.user.id
+        const poll = await closePollHandler(id,user);
         res.json({
             success: true,
             messege: "Poll closed",
             data: poll
         });
+    } catch (error) {
+        console.log("Error in Login!"+error);
+        if(error.status){
+            res.status(error.status).json(
+            {
+                success: false,
+                messege: error.messege,
+                data: null
+            }
+        );
+        }
+    }
+}
+
+export const DeleteAPoll = async (req,res) => {
+    try {
+        const id = req.params.id;
+        const user = req.user.id;
+
+        const poll = await DeletePollHandler(id,user);
+
+        if (poll) {
+            res.json({
+                success: true,
+                messege: "Delete a poll",
+                data: poll
+            });
+        }
+        
     } catch (error) {
         console.log("Error in Login!"+error);
         if(error.status){

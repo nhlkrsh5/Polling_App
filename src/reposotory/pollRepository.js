@@ -41,3 +41,21 @@ export const ClosePollById = async (id) => {
         throw error;
     }
 }
+
+export const FindAPollByID = async (id) => {
+    try {
+        const poll = await Poll.findById(id);
+        return poll
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const DeleteAPollByID = async (id) => {
+    try {
+        const poll = await Poll.findByIdAndDelete(id);
+        return poll;
+    } catch (error) {
+        throw error;
+    }
+}
